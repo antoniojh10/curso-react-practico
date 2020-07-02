@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Components
 import Header from '../components/Header';
@@ -8,46 +8,52 @@ import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
 import Footer from '../components/Footer';
 
+// Hooks
+import useInitialState from '../hooks/useInitialState';
+
 // Styles
 import '../assets/styles/App.scss';
 
-const App = () => (
-  <React.Fragment>
-    <Header />
-    <Search />
+const API = 'http://localhost:3000/initalState';
 
-    <Categories title="Mi lista">
-      <Carousel>
-        <CarouselItem />
-        <CarouselItem />
-        <CarouselItem />
-        <CarouselItem />
-        <CarouselItem />
-      </Carousel>
-    </Categories>
+const App = () => {
+  const initialState = useInitialState(API);
+  return initialState.length === 0 ? (
+    <h1>Loading...</h1>
+  ) : (
+    <React.Fragment>
+      <Header />
+      <Search />
 
-    <Categories title="Tendencias">
-      <Carousel>
-        <CarouselItem />
-        <CarouselItem />
-        <CarouselItem />
-        <CarouselItem />
-        <CarouselItem />
-      </Carousel>
-    </Categories>
+      {initialState.mylist?.length > 0 && (
+        <Categories title="Mi lista">
+          <Carousel>
+            {initialState.mylist?.map((trend) => (
+              <CarouselItem key={trend.id} {...trend} />
+            ))}
+          </Carousel>
+        </Categories>
+      )}
 
-    <Categories title="Originales de PlatziVideo">
-      <Carousel>
-        <CarouselItem />
-        <CarouselItem />
-        <CarouselItem />
-        <CarouselItem />
-        <CarouselItem />
-      </Carousel>
-    </Categories>
+      <Categories title="Tendencias">
+        <Carousel>
+          {initialState.trends?.map((trend) => (
+            <CarouselItem key={trend.id} {...trend} />
+          ))}
+        </Carousel>
+      </Categories>
 
-    <Footer />
-  </React.Fragment>
-);
+      <Categories title="Originales de PlatziVideo">
+        <Carousel>
+          {initialState.originals?.map((trend) => (
+            <CarouselItem key={trend.id} {...trend} />
+          ))}
+        </Carousel>
+      </Categories>
+
+      <Footer />
+    </React.Fragment>
+  );
+};
 
 export default App;
