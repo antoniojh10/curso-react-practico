@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // Styles
 import '../assets/styles/components/CarouselItem.scss';
 
-// Images
+// Statics
 import playIcon from '../assets/static/play-icon.png';
 import plusIcon from '../assets/static/plus-icon.png';
 
