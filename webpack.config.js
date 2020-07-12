@@ -39,6 +39,11 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.(js|jsx)$/,
+        enforce: 'pre',
+        use: ['source-map-loader'],
+      },
     ],
   },
   plugins: [
